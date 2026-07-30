@@ -1,6 +1,7 @@
 com\internship\management\dto\response\DailyLogResponse$DailyLogResponseBuilder.class
 com\internship\management\entity\Intern$InternBuilder.class
 com\internship\management\entity\Task.class
+com\internship\management\config\SwaggerConfig.class
 com\internship\management\security\CustomUserDetailsService.class
 com\internship\management\config\SecurityConfig.class
 com\internship\management\service\impl\ProjectServiceImpl.class
@@ -40,6 +41,7 @@ com\internship\management\service\impl\TaskServiceImpl.class
 com\internship\management\entity\Project$ProjectBuilder.class
 com\internship\management\repository\TaskRepository.class
 com\internship\management\service\impl\SubmissionServiceImpl.class
+com\internship\management\config\DatabaseSeeder.class
 com\internship\management\enums\Role.class
 com\internship\management\enums\TaskStatus.class
 com\internship\management\exception\FileStorageException.class
