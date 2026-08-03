@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+/* Global overrides or base styling if needed */
+html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: #f8fafc; /* Slate-50 background for clean UI */
+  color: #0f172a; /* Slate-900 default text color */
+}
