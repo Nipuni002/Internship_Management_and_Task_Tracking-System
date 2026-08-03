@@ -100,7 +100,7 @@ public class InternController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'INTERN')")
     @Operation(summary = "Get all intern profiles", description = "Retrieves a paginated list of intern profiles with optional filters. Admin access only.")
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Interns fetched successfully"),

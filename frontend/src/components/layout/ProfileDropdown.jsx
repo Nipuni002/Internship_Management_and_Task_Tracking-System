@@ -27,6 +27,7 @@ const ProfileDropdown = () => {
 
   if (!user) return null;
 
+  const displayName = user.fullName || (user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.email || 'User');
   const profilePath = user.role === 'ROLE_ADMIN' ? '/admin/profile' : '/intern/profile';
   const settingsPath = user.role === 'ROLE_ADMIN' ? '/admin/settings' : '/intern/profile#settings';
 
@@ -39,10 +40,10 @@ const ProfileDropdown = () => {
         aria-haspopup="true"
       >
         <div className="w-8.5 h-8.5 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">
-          {user.fullName.charAt(0).toUpperCase()}
+          {displayName.charAt(0).toUpperCase()}
         </div>
         <div className="hidden sm:flex flex-col items-start text-left select-none">
-          <span className="text-xs font-semibold text-slate-800 truncate max-w-[120px]">{user.fullName}</span>
+          <span className="text-xs font-semibold text-slate-800 truncate max-w-[120px]">{displayName}</span>
           <span className="text-[10px] text-slate-400 capitalize">{user.role.replace('ROLE_', '').toLowerCase()}</span>
         </div>
         <FiChevronDown size={14} className={`text-slate-400 hidden sm:block transition-transform duration-200 ${isOpen && 'rotate-180'}`} />
@@ -52,7 +53,7 @@ const ProfileDropdown = () => {
         <div className="absolute right-0 mt-2.5 w-56 rounded-xl bg-white border border-slate-200 shadow-lg shadow-slate-200/50 py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
           {/* Header */}
           <div className="px-4 py-2 border-b border-slate-100">
-            <p className="text-sm font-semibold text-slate-800 truncate">{user.fullName}</p>
+            <p className="text-sm font-semibold text-slate-800 truncate">{displayName}</p>
             <p className="text-xs text-slate-400 truncate mt-0.5">{user.email}</p>
           </div>
 

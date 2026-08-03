@@ -105,4 +105,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setPassword(null); // Clear password hash
         return user;
     }
+
+    @Override
+    public boolean isFirstTimeLogin(String email) {
+        return userRepository.findByEmail(email)
+                .map(user -> "FIRST_TIME_LOGIN".equals(user.getPassword()))
+                .orElse(false);
+    }
 }

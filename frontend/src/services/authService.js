@@ -9,6 +9,11 @@ const authService = {
   getCurrentUser: async () => {
     const response = await api.get('/api/auth/me');
     return response.data; // returns wrapped user profile
+  },
+
+  checkFirstTimeLogin: async (email) => {
+    const response = await api.get('/api/auth/check-first-time', { params: { email } });
+    return response.data; // returns wrapper with true/false inside data
   }
 };
 

@@ -64,7 +64,7 @@ const TaskList = () => {
         if (projResponse.success && projResponse.data) {
           const map = {};
           projResponse.data.content.forEach((p) => {
-            map[p.id] = p.name;
+            map[p.id] = p.title;
           });
           setProjectsMap(map);
         }

@@ -38,6 +38,10 @@ export const AuthProvider = ({ children }) => {
               if (userData.role && !userData.role.startsWith('ROLE_')) {
                 userData.role = `ROLE_${userData.role}`;
               }
+              // Compute fullName from firstName and lastName if not provided by backend
+              if (!userData.fullName && userData.firstName && userData.lastName) {
+                userData.fullName = `${userData.firstName} ${userData.lastName}`;
+              }
               setUserState(userData);
               setStoredUser(userData);
             } else {

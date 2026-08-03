@@ -45,7 +45,7 @@ const MyTasks = () => {
         if (response.success && response.data) {
           const map = {};
           response.data.content.forEach((p) => {
-            map[p.id] = p.name;
+            map[p.id] = p.title;
           });
           setProjectsMap(map);
         }

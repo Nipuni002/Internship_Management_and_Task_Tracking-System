@@ -7,6 +7,7 @@ import RoleProtectedRoute from './RoleProtectedRoute';
 
 // Auth Pages
 import Login from '../pages/auth/Login';
+import Register from '../pages/auth/Register';
 
 // Admin Pages
 import AdminDashboard from '../pages/admin/AdminDashboard';
@@ -14,13 +15,19 @@ import InternList from '../pages/admin/interns/InternList';
 import AddIntern from '../pages/admin/interns/AddIntern';
 import EditIntern from '../pages/admin/interns/EditIntern';
 import InternDetails from '../pages/admin/interns/InternDetails';
-import AdminProjects from '../pages/admin/Projects';
+import ProjectList from '../pages/admin/projects/ProjectList';
+import CreateProject from '../pages/admin/projects/CreateProject';
+import EditProject from '../pages/admin/projects/EditProject';
+import ProjectDetails from '../pages/admin/projects/ProjectDetails';
 import AdminTaskList from '../pages/admin/tasks/TaskList';
 import AdminCreateTask from '../pages/admin/tasks/CreateTask';
 import AdminEditTask from '../pages/admin/tasks/EditTask';
 import AdminTaskDetails from '../pages/admin/tasks/TaskDetails';
-import AdminLogs from '../pages/admin/Logs';
-import AdminSubmissions from '../pages/admin/Submissions';
+import AllDailyLogs from '../pages/admin/logs/AllDailyLogs';
+import AdminDailyLogDetails from '../pages/admin/logs/DailyLogDetails';
+import SubmissionList from '../pages/admin/submissions/SubmissionList';
+import ReviewSubmission from '../pages/admin/submissions/ReviewSubmission';
+import AdminSubmissionDetails from '../pages/admin/submissions/SubmissionDetails';
 import AdminAnalytics from '../pages/admin/Analytics';
 import AdminProfile from '../pages/admin/Profile';
 import AdminSettings from '../pages/admin/Settings';
@@ -30,20 +37,20 @@ import InternDashboard from '../pages/intern/InternDashboard';
 import InternProjects from '../pages/intern/Projects';
 import InternMyTasks from '../pages/intern/tasks/MyTasks';
 import InternTaskDetails from '../pages/intern/tasks/TaskDetails';
-import InternLogs from '../pages/intern/Logs';
-import InternSubmissions from '../pages/intern/Submissions';
+import DailyLogList from '../pages/intern/logs/DailyLogList';
+import AddDailyLog from '../pages/intern/logs/AddDailyLog';
+import EditDailyLog from '../pages/intern/logs/EditDailyLog';
+import InternDailyLogDetails from '../pages/intern/logs/DailyLogDetails';
+import MySubmissions from '../pages/intern/submissions/MySubmissions';
+import SubmitWork from '../pages/intern/submissions/SubmitWork';
+import InternSubmissionDetails from '../pages/intern/submissions/SubmissionDetails';
 import InternFeedback from '../pages/intern/Feedback';
 import InternProfile from '../pages/intern/Profile';
 
 // Common Pages
 import AccessDenied from '../components/common/AccessDenied';
 
-const RegisterPlaceholder = () => (
-  <div className="text-center text-slate-200">
-    <p>Registration Form Placeholder</p>
-    <a href="/login" className="text-emerald-400 hover:underline mt-4 inline-block font-sans text-xs">Back to Login</a>
-  </div>
-);
+
 
 const NotFoundPlaceholder = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center p-6 text-white text-center font-sans">
@@ -72,7 +79,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/register',
-        element: <RegisterPlaceholder />,
+        element: <Register />,
       },
     ],
   },
@@ -128,7 +135,31 @@ export const router = createBrowserRouter([
         path: '/admin/projects',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <AdminProjects />
+            <ProjectList />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/admin/projects/create',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
+            <CreateProject />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/admin/projects/:id',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
+            <ProjectDetails />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/admin/projects/:id/edit',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
+            <EditProject />
           </RoleProtectedRoute>
         ),
       },
@@ -168,7 +199,15 @@ export const router = createBrowserRouter([
         path: '/admin/logs',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <AdminLogs />
+            <AllDailyLogs />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/admin/logs/:id',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
+            <AdminDailyLogDetails />
           </RoleProtectedRoute>
         ),
       },
@@ -176,7 +215,23 @@ export const router = createBrowserRouter([
         path: '/admin/submissions',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <AdminSubmissions />
+            <SubmissionList />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/admin/submissions/:id',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
+            <AdminSubmissionDetails />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/admin/submissions/:id/review',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
+            <ReviewSubmission />
           </RoleProtectedRoute>
         ),
       },
@@ -242,7 +297,31 @@ export const router = createBrowserRouter([
         path: '/intern/logs',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_INTERN">
-            <InternLogs />
+            <DailyLogList />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/intern/logs/add',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_INTERN">
+            <AddDailyLog />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/intern/logs/:id',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_INTERN">
+            <InternDailyLogDetails />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/intern/logs/:id/edit',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_INTERN">
+            <EditDailyLog />
           </RoleProtectedRoute>
         ),
       },
@@ -250,7 +329,23 @@ export const router = createBrowserRouter([
         path: '/intern/submissions',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_INTERN">
-            <InternSubmissions />
+            <MySubmissions />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/intern/submissions/submit',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_INTERN">
+            <SubmitWork />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/intern/submissions/:id',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_INTERN">
+            <InternSubmissionDetails />
           </RoleProtectedRoute>
         ),
       },
