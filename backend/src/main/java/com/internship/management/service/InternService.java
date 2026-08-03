@@ -14,4 +14,5 @@ public interface InternService {
     Page<InternResponse> getAllInterns(Pageable pageable, InternStatus status, String university, String degree, String search);
     InternResponse activateIntern(String id);
     InternResponse deactivateIntern(String id);
+    InternResponse getCurrentInternProfile();
 }

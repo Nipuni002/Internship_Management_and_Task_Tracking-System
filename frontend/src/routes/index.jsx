@@ -10,9 +10,15 @@ import Login from '../pages/auth/Login';
 
 // Admin Pages
 import AdminDashboard from '../pages/admin/AdminDashboard';
-import AdminInterns from '../pages/admin/Interns';
+import InternList from '../pages/admin/interns/InternList';
+import AddIntern from '../pages/admin/interns/AddIntern';
+import EditIntern from '../pages/admin/interns/EditIntern';
+import InternDetails from '../pages/admin/interns/InternDetails';
 import AdminProjects from '../pages/admin/Projects';
-import AdminTasks from '../pages/admin/Tasks';
+import AdminTaskList from '../pages/admin/tasks/TaskList';
+import AdminCreateTask from '../pages/admin/tasks/CreateTask';
+import AdminEditTask from '../pages/admin/tasks/EditTask';
+import AdminTaskDetails from '../pages/admin/tasks/TaskDetails';
 import AdminLogs from '../pages/admin/Logs';
 import AdminSubmissions from '../pages/admin/Submissions';
 import AdminAnalytics from '../pages/admin/Analytics';
@@ -22,7 +28,8 @@ import AdminSettings from '../pages/admin/Settings';
 // Intern Pages
 import InternDashboard from '../pages/intern/InternDashboard';
 import InternProjects from '../pages/intern/Projects';
-import InternTasks from '../pages/intern/Tasks';
+import InternMyTasks from '../pages/intern/tasks/MyTasks';
+import InternTaskDetails from '../pages/intern/tasks/TaskDetails';
 import InternLogs from '../pages/intern/Logs';
 import InternSubmissions from '../pages/intern/Submissions';
 import InternFeedback from '../pages/intern/Feedback';
@@ -89,7 +96,31 @@ export const router = createBrowserRouter([
         path: '/admin/interns',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <AdminInterns />
+            <InternList />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/admin/interns/add',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
+            <AddIntern />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/admin/interns/:id',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
+            <InternDetails />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/admin/interns/:id/edit',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
+            <EditIntern />
           </RoleProtectedRoute>
         ),
       },
@@ -105,7 +136,31 @@ export const router = createBrowserRouter([
         path: '/admin/tasks',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <AdminTasks />
+            <AdminTaskList />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/admin/tasks/create',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
+            <AdminCreateTask />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/admin/tasks/:id',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
+            <AdminTaskDetails />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/admin/tasks/:id/edit',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
+            <AdminEditTask />
           </RoleProtectedRoute>
         ),
       },
@@ -171,7 +226,15 @@ export const router = createBrowserRouter([
         path: '/intern/tasks',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_INTERN">
-            <InternTasks />
+            <InternMyTasks />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/intern/tasks/:id',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_INTERN">
+            <InternTaskDetails />
           </RoleProtectedRoute>
         ),
       },

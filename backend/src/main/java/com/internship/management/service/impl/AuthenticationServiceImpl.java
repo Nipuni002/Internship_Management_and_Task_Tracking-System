@@ -57,15 +57,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public LoginResponse login(LoginRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
-
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + request.getEmail()));
+
+        // Check if this is the user's first-time login
+        if ("FIRST_TIME_LOGIN".equals(user.getPassword())) {
+            if (request.getPassword() == null || request.getPassword().isBlank()) {
+                throw new IllegalArgumentException("Password cannot be blank for first-time password setup");
+            }
+            // Encrypt and save the user's entered password as their permanent password
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            user = userRepository.save(user);
+        } else {
+            // Standard authentication check for subsequent logins
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
+        }
 
         CustomUserDetails userDetails = new CustomUserDetails(user);
         String jwtToken = jwtService.generateToken(userDetails);

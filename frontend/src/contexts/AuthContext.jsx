@@ -34,8 +34,12 @@ export const AuthProvider = ({ children }) => {
             // Verify real token validity by calling profile API
             const profileResponse = await authService.getCurrentUser();
             if (profileResponse.success && profileResponse.data) {
-              setUserState(profileResponse.data);
-              setStoredUser(profileResponse.data);
+              const userData = profileResponse.data;
+              if (userData.role && !userData.role.startsWith('ROLE_')) {
+                userData.role = `ROLE_${userData.role}`;
+              }
+              setUserState(userData);
+              setStoredUser(userData);
             } else {
               handleSessionExpired();
             }
@@ -72,17 +76,19 @@ export const AuthProvider = ({ children }) => {
         setToken(accessToken);
         setTokenState(accessToken);
 
+        const formattedRole = role && !role.startsWith('ROLE_') ? `ROLE_${role}` : role;
+
         const loggedInUser = {
           userId: response.data.userId,
           fullName: response.data.fullName,
           email: response.data.email,
-          role: role
+          role: formattedRole
         };
 
         setStoredUser(loggedInUser);
         setUserState(loggedInUser);
         toast.success(response.message || 'Login successful!');
-        return { success: true, role };
+        return { success: true, role: formattedRole };
       } else {
         throw new Error(response.message || 'Login failed');
       }
@@ -137,7 +143,9 @@ export const AuthProvider = ({ children }) => {
   const hasRole = (roles) => {
     if (!user || !user.role) return false;
     const rolesArray = Array.isArray(roles) ? roles : [roles];
-    return rolesArray.includes(user.role);
+    const normalizedUserRole = user.role.startsWith('ROLE_') ? user.role : `ROLE_${user.role}`;
+    const normalizedCheckedRoles = rolesArray.map(r => r.startsWith('ROLE_') ? r : `ROLE_${r}`);
+    return normalizedCheckedRoles.includes(normalizedUserRole);
   };
 
   return (

@@ -6,7 +6,7 @@ spring:
     name: internship-management
   data:
     mongodb:
-      uri: mongodb://localhost:27017/InternshipTask_db
+      uri: mongodb+srv://Admin:ABC123@cluster0.2ndv7.mongodb.net/InternshipTask_db?appName=Cluster0
 
 app:
   jwt:

@@ -20,13 +20,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/api/interns")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ADMIN')")
-@Tag(name = "Interns", description = "Endpoints for managing intern profiles (Admin only)")
+@Tag(name = "Interns", description = "Endpoints for managing intern profiles")
 public class InternController {
 
     private final InternService internService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Create an intern profile", description = "Creates a new intern profile and user account. Admin access only.")
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Intern profile created successfully"),
@@ -41,6 +41,7 @@ public class InternController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update an intern profile", description = "Updates details of an existing intern profile. Admin access only.")
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Intern profile updated successfully"),
@@ -58,6 +59,7 @@ public class InternController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete an intern profile", description = "Permanently deletes an intern profile and user account. Admin access only.")
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Intern profile deleted successfully"),
@@ -70,7 +72,21 @@ public class InternController {
         return ResponseEntity.ok(ApiResponse.success("Intern deleted successfully"));
     }
 
+    @GetMapping("/me")
+    @PreAuthorize("hasAnyRole('ADMIN', 'INTERN')")
+    @Operation(summary = "Get current logged-in intern profile", description = "Fetches the full intern profile of the currently authenticated user (Intern or Admin).")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Intern profile fetched successfully"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Unauthorized"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Intern profile not found for the user")
+    })
+    public ResponseEntity<ApiResponse<InternResponse>> getCurrentInternProfile() {
+        InternResponse response = internService.getCurrentInternProfile();
+        return ResponseEntity.ok(ApiResponse.success("Current intern profile fetched successfully", response));
+    }
+
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get intern profile by ID", description = "Fetches detailed intern profile info. Admin access only.")
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Intern profile fetched successfully"),
@@ -84,6 +100,7 @@ public class InternController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get all intern profiles", description = "Retrieves a paginated list of intern profiles with optional filters. Admin access only.")
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Interns fetched successfully"),
@@ -102,6 +119,7 @@ public class InternController {
     }
 
     @PatchMapping("/{id}/activate")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Activate an intern profile", description = "Changes intern account status to active. Admin access only.")
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Intern profile activated successfully"),
@@ -115,6 +133,7 @@ public class InternController {
     }
 
     @PatchMapping("/{id}/deactivate")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Deactivate an intern profile", description = "Changes intern account status to inactive. Admin access only.")
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Intern profile deactivated successfully"),
