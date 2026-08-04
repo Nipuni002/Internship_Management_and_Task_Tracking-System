@@ -64,7 +64,7 @@ const TaskList = () => {
         if (projResponse.success && projResponse.data) {
           const map = {};
           projResponse.data.content.forEach((p) => {
-            map[p.id] = p.name;
+            map[p.id] = p.title;
           });
           setProjectsMap(map);
         }
@@ -108,6 +108,14 @@ const TaskList = () => {
   useEffect(() => {
     fetchTasks();
   }, [params]);
+
+  useEffect(() => {
+    const handleGlobalSearch = (e) => {
+      setParams(prev => ({ ...prev, search: e.detail, page: 0 }));
+    };
+    window.addEventListener('global-search', handleGlobalSearch);
+    return () => window.removeEventListener('global-search', handleGlobalSearch);
+  }, []);
 
   // Page handlers
   const handlePageChange = (newPage) => {

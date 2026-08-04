@@ -3,9 +3,18 @@ import { useLocation } from 'react-router-dom';
 import { FiMenu, FiSearch } from 'react-icons/fi';
 import ProfileDropdown from './ProfileDropdown';
 import NotificationDropdown from './NotificationDropdown';
+import ThemeToggle from '../common/ThemeToggle';
 
 const Navbar = ({ onMenuClick }) => {
   const location = useLocation();
+  const [searchVal, setSearchVal] = React.useState('');
+
+  const handleSearchChange = (e) => {
+    const val = e.target.value;
+    setSearchVal(val);
+    const event = new CustomEvent('global-search', { detail: val });
+    window.dispatchEvent(event);
+  };
 
   const getPageTitle = (pathname) => {
     if (pathname.includes('/dashboard')) return 'Dashboard';
@@ -24,7 +33,7 @@ const Navbar = ({ onMenuClick }) => {
   const title = getPageTitle(location.pathname);
 
   return (
-    <header className="h-16 bg-white border-b border-slate-200/80 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-30 font-sans shadow-sm shadow-slate-100/40">
+    <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200/80 dark:border-slate-800 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-30 font-sans shadow-sm shadow-slate-100/40">
       <div className="flex items-center gap-3">
         {/* Mobile menu trigger */}
         <button
@@ -36,7 +45,7 @@ const Navbar = ({ onMenuClick }) => {
         </button>
         
         {/* Dynamic page title */}
-        <h1 className="text-base sm:text-lg font-bold text-slate-900 leading-none hidden xs:block">
+        <h1 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100 leading-none hidden xs:block">
           {title}
         </h1>
       </div>
@@ -50,15 +59,20 @@ const Navbar = ({ onMenuClick }) => {
           </div>
           <input
             type="text"
-            placeholder="Search dashboard..."
-            className="w-56 bg-slate-50 border border-slate-250 text-slate-700 rounded-lg pl-9 pr-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 placeholder-slate-400 transition-all"
+            value={searchVal}
+            onChange={handleSearchChange}
+            placeholder="Search tables..."
+            className="w-56 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg pl-9 pr-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 placeholder-slate-450 dark:placeholder-slate-500 transition-all font-semibold"
           />
         </div>
+
+        {/* Theme Toggle switch */}
+        <ThemeToggle />
 
         {/* Notifications feed button */}
         <NotificationDropdown />
 
-        <div className="h-6 w-px bg-slate-200"></div>
+        <div className="h-6 w-px bg-slate-200 dark:bg-slate-800"></div>
 
         {/* User profile dropdown menu */}
         <ProfileDropdown />

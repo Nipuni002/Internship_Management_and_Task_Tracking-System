@@ -23,13 +23,13 @@ import java.time.LocalDate;
 @RestController
 @RequestMapping("/api/projects")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ADMIN')")
-@Tag(name = "Projects", description = "Endpoints for managing projects (Admin only)")
+@Tag(name = "Projects", description = "Endpoints for managing projects")
 public class ProjectController {
 
     private final ProjectService projectService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Create a project", description = "Creates a new project record. Admin access only.")
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Project created successfully"),
@@ -43,6 +43,7 @@ public class ProjectController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update a project", description = "Updates details of an existing project by ID. Admin access only.")
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Project updated successfully"),
@@ -60,6 +61,7 @@ public class ProjectController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete a project", description = "Deletes a project by ID. Admin access only.")
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Project deleted successfully"),
@@ -73,11 +75,12 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get project by ID", description = "Retrieves details of a project by ID. Admin access only.")
+    @PreAuthorize("hasAnyRole('ADMIN', 'INTERN')")
+    @Operation(summary = "Get project by ID", description = "Retrieves details of a project by ID. Accessible to Admin and Interns.")
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Project fetched successfully"),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Unauthorized"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Forbidden - Admin role required"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Forbidden"),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Project not found")
     })
     public ResponseEntity<ApiResponse<ProjectResponse>> getProjectById(@PathVariable String id) {
@@ -86,11 +89,11 @@ public class ProjectController {
     }
 
     @GetMapping
-    @Operation(summary = "Get all projects", description = "Retrieves a paginated list of projects with optional status, deadline, technology, and search filters. Admin access only.")
+    @PreAuthorize("hasAnyRole('ADMIN', 'INTERN')")
+    @Operation(summary = "Get all projects", description = "Retrieves a paginated list of projects with optional status, deadline, technology, and search filters. Accessible to Admin and Interns.")
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Projects fetched successfully"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Unauthorized"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Forbidden - Admin role required")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     public ResponseEntity<ApiResponse<Page<ProjectResponse>>> getAllProjects(
             Pageable pageable,
@@ -104,6 +107,7 @@ public class ProjectController {
     }
 
     @PatchMapping("/{id}/assign")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Assign interns to a project", description = "Assigns list of intern IDs to a specific project. Admin access only.")
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Interns assigned successfully"),
@@ -121,6 +125,7 @@ public class ProjectController {
     }
 
     @PatchMapping("/{id}/remove")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Remove interns from a project", description = "Removes list of intern IDs from a specific project. Admin access only.")
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Interns removed successfully"),

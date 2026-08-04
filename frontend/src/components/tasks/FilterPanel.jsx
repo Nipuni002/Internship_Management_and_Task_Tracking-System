@@ -116,7 +116,7 @@ const FilterPanel = ({
             <option value="">All Projects</option>
             {projects.map((proj) => (
               <option key={proj.id} value={proj.id}>
-                {proj.name}
+                {proj.title}
               </option>
             ))}
           </select>

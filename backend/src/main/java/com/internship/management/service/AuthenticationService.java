@@ -10,4 +10,6 @@ public interface AuthenticationService {
     RegisterResponse register(RegisterRequest request);
     LoginResponse login(LoginRequest request);
     User getCurrentUser();
+    boolean isFirstTimeLogin(String email);
+    void resetPassword(String email, String employeeId, String newPassword);
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { FiMail, FiLock, FiEye, FiEyeOff, FiLoader } from 'react-icons/fi';
 import useAuth from '../../hooks/useAuth';
 
@@ -122,7 +122,7 @@ const Login = () => {
             />
             Remember me
           </label>
-          <a href="#" className="text-emerald-400 hover:underline">Forgot password?</a>
+          <Link to="/forgot-password" className="text-emerald-400 hover:underline">Forgot password?</Link>
         </div>
 
         {/* Submit Button */}
@@ -141,6 +141,16 @@ const Login = () => {
               'Sign In'
             )}
           </button>
+        </div>
+
+        {/* First-time login link */}
+        <div className="text-center pt-2">
+          <p className="text-xs text-slate-400">
+            First-time logging in?{' '}
+            <Link to="/register" className="text-emerald-400 hover:underline font-medium">
+              Activate Account
+            </Link>
+          </p>
         </div>
       </form>
     </div>

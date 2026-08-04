@@ -42,7 +42,7 @@ const TaskDetails = () => {
           try {
             const pResponse = await taskService.getAllProjects();
             const project = pResponse.data.content.find((p) => p.id === fetchedTask.projectId);
-            setProjectName(project ? project.name : 'Unknown Project');
+            setProjectName(project ? project.title : 'Unknown Project');
           } catch {
             setProjectName('Unknown Project');
           }

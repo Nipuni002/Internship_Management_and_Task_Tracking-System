@@ -126,7 +126,7 @@ const TaskForm = ({ initialData = {}, onSubmit, isSubmitting = false, isEdit = f
               <option value="">-- Select Project --</option>
               {projects.map((proj) => (
                 <option key={proj.id} value={proj.id}>
-                  {proj.name}
+                  {proj.title}
                 </option>
               ))}
             </select>

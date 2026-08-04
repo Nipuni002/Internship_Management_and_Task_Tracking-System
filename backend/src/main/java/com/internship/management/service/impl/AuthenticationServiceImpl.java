@@ -5,7 +5,9 @@ import com.internship.management.dto.request.RegisterRequest;
 import com.internship.management.dto.response.LoginResponse;
 import com.internship.management.dto.response.RegisterResponse;
 import com.internship.management.entity.User;
+import com.internship.management.entity.Intern;
 import com.internship.management.repository.UserRepository;
+import com.internship.management.repository.InternRepository;
 import com.internship.management.security.CustomUserDetails;
 import com.internship.management.service.AuthenticationService;
 import com.internship.management.service.JwtService;
@@ -21,12 +23,14 @@ import com.internship.management.exception.UnauthorizedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.internship.management.enums.Role;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository userRepository;
+    private final InternRepository internRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
@@ -104,5 +108,32 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         user.setPassword(null); // Clear password hash
         return user;
+    }
+
+    @Override
+    public boolean isFirstTimeLogin(String email) {
+        return userRepository.findByEmail(email)
+                .map(user -> "FIRST_TIME_LOGIN".equals(user.getPassword()))
+                .orElse(false);
+    }
+
+    @Override
+    public void resetPassword(String email, String employeeId, String newPassword) {
+        Intern intern = internRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Intern profile not found with email: " + email));
+        
+        if (!employeeId.equals(intern.getEmployeeId())) {
+            throw new IllegalArgumentException("Invalid Employee ID provided for this email.");
+        }
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
+        
+        if (user.getRole() == Role.ADMIN) {
+            throw new IllegalArgumentException("Password reset is not permitted for admin accounts.");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 }
