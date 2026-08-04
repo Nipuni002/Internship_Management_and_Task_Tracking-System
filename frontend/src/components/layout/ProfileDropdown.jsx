@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiUser, FiSettings, FiLogOut, FiChevronDown } from 'react-icons/fi';
+import { FiUser, FiLogOut, FiChevronDown } from 'react-icons/fi';
 import useAuth from '../../hooks/useAuth';
 
 const ProfileDropdown = () => {
@@ -29,13 +29,12 @@ const ProfileDropdown = () => {
 
   const displayName = user.fullName || (user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.email || 'User');
   const profilePath = user.role === 'ROLE_ADMIN' ? '/admin/profile' : '/intern/profile';
-  const settingsPath = user.role === 'ROLE_ADMIN' ? '/admin/settings' : '/intern/profile#settings';
 
   return (
     <div className="relative font-sans" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2.5 p-1 rounded-lg hover:bg-slate-100 transition-colors focus:outline-none cursor-pointer"
+        className="flex items-center gap-2.5 p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus:outline-none cursor-pointer"
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
@@ -43,18 +42,18 @@ const ProfileDropdown = () => {
           {displayName.charAt(0).toUpperCase()}
         </div>
         <div className="hidden sm:flex flex-col items-start text-left select-none">
-          <span className="text-xs font-semibold text-slate-800 truncate max-w-[120px]">{displayName}</span>
-          <span className="text-[10px] text-slate-400 capitalize">{user.role.replace('ROLE_', '').toLowerCase()}</span>
+          <span className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate max-w-[120px]">{displayName}</span>
+          <span className="text-[10px] text-slate-450 dark:text-slate-500 capitalize">{user.role.replace('ROLE_', '').toLowerCase()}</span>
         </div>
-        <FiChevronDown size={14} className={`text-slate-400 hidden sm:block transition-transform duration-200 ${isOpen && 'rotate-180'}`} />
+        <FiChevronDown size={14} className="text-slate-400 dark:text-slate-500 hidden sm:block transition-transform duration-200" style={{ transform: isOpen ? 'rotate(180deg)' : 'none' }} />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2.5 w-56 rounded-xl bg-white border border-slate-200 shadow-lg shadow-slate-200/50 py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+        <div className="absolute right-0 mt-2.5 w-56 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg shadow-slate-200/50 dark:shadow-none py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
           {/* Header */}
-          <div className="px-4 py-2 border-b border-slate-100">
-            <p className="text-sm font-semibold text-slate-800 truncate">{displayName}</p>
-            <p className="text-xs text-slate-400 truncate mt-0.5">{user.email}</p>
+          <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-800">
+            <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">{displayName}</p>
+            <p className="text-xs text-slate-400 dark:text-slate-500 truncate mt-0.5">{user.email}</p>
           </div>
 
           {/* Links */}
@@ -62,29 +61,21 @@ const ProfileDropdown = () => {
             <Link
               to={profilePath}
               onClick={() => setIsOpen(false)}
-              className="flex items-center gap-3 px-4 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+              className="flex items-center gap-3 px-4 py-2 text-xs font-medium text-slate-700 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
             >
-              <FiUser className="text-slate-400" size={15} />
+              <FiUser className="text-slate-400 dark:text-slate-500" size={15} />
               View Profile
-            </Link>
-            <Link
-              to={settingsPath}
-              onClick={() => setIsOpen(false)}
-              className="flex items-center gap-3 px-4 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors"
-            >
-              <FiSettings className="text-slate-400" size={15} />
-              Settings
             </Link>
           </div>
 
           {/* Logout */}
-          <div className="border-t border-slate-100 mt-1 pt-1.5">
+          <div className="border-t border-slate-100 dark:border-slate-800 mt-1 pt-1.5">
             <button
               onClick={() => {
                 setIsOpen(false);
                 handleLogout();
               }}
-              className="flex items-center gap-3 px-4 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 hover:text-rose-700 transition-colors w-full text-left cursor-pointer"
+              className="flex items-center gap-3 px-4 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/10 hover:text-rose-700 transition-colors w-full text-left cursor-pointer"
             >
               <FiLogOut size={15} />
               Logout

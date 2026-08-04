@@ -82,6 +82,7 @@ com\internship\management\dto\response\AuthResponse.class
 com\internship\management\enums\SubmissionStatus.class
 com\internship\management\dto\response\SubmissionResponse.class
 com\internship\management\exception\BusinessException.class
+com\internship\management\dto\request\ResetPasswordRequest.class
 com\internship\management\entity\Intern.class
 com\internship\management\entity\User.class
 com\internship\management\dto\request\TaskAssignmentRequest.class

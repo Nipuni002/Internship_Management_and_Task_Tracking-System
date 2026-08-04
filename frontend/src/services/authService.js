@@ -14,6 +14,11 @@ const authService = {
   checkFirstTimeLogin: async (email) => {
     const response = await api.get('/api/auth/check-first-time', { params: { email } });
     return response.data; // returns wrapper with true/false inside data
+  },
+
+  resetPassword: async (email, employeeId, newPassword) => {
+    const response = await api.post('/api/auth/reset-password', { email, employeeId, newPassword });
+    return response.data;
   }
 };
 

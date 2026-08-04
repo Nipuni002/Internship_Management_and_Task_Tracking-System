@@ -13,7 +13,9 @@ import {
   FiMessageSquare,
   FiX,
   FiLogOut,
-  FiLayers
+  FiLayers,
+  FiUserCheck,
+  FiCalendar
 } from 'react-icons/fi';
 import useAuth from '../../hooks/useAuth';
 
@@ -44,9 +46,11 @@ const MobileSidebar = ({ isOpen, onClose }) => {
     { name: 'Task Management', path: '/admin/tasks', icon: <FiCheckSquare size={18} /> },
     { name: 'Daily Work Logs', path: '/admin/logs', icon: <FiActivity size={18} /> },
     { name: 'Submission & Feedback', path: '/admin/submissions', icon: <FiAward size={18} /> },
+    { name: 'Attendance', path: '/admin/attendance', icon: <FiUserCheck size={18} /> },
+    { name: 'Leave Requests', path: '/admin/leave', icon: <FiCalendar size={18} /> },
+    { name: 'Performance Eval', path: '/admin/evaluations', icon: <FiAward size={18} /> },
     { name: 'Analytics', path: '/admin/analytics', icon: <FiTrendingUp size={18} /> },
     { name: 'Profile', path: '/admin/profile', icon: <FiUser size={18} /> },
-    { name: 'Settings', path: '/admin/settings', icon: <FiSettings size={18} /> },
   ];
 
   const internMenu = [
@@ -55,6 +59,9 @@ const MobileSidebar = ({ isOpen, onClose }) => {
     { name: 'My Tasks', path: '/intern/tasks', icon: <FiCheckSquare size={18} /> },
     { name: 'Daily Work Logs', path: '/intern/logs', icon: <FiActivity size={18} /> },
     { name: 'My Submissions', path: '/intern/submissions', icon: <FiAward size={18} /> },
+    { name: 'Attendance', path: '/intern/attendance', icon: <FiUserCheck size={18} /> },
+    { name: 'Leave Requests', path: '/intern/leave', icon: <FiCalendar size={18} /> },
+    { name: 'Performance Eval', path: '/intern/evaluations', icon: <FiAward size={18} /> },
     { name: 'Feedback', path: '/intern/feedback', icon: <FiMessageSquare size={18} /> },
     { name: 'Profile', path: '/intern/profile', icon: <FiUser size={18} /> },
   ];

@@ -122,7 +122,7 @@ const Login = () => {
             />
             Remember me
           </label>
-          <a href="#" className="text-emerald-400 hover:underline">Forgot password?</a>
+          <Link to="/forgot-password" className="text-emerald-400 hover:underline">Forgot password?</Link>
         </div>
 
         {/* Submit Button */}

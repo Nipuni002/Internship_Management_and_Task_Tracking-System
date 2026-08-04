@@ -109,6 +109,14 @@ const TaskList = () => {
     fetchTasks();
   }, [params]);
 
+  useEffect(() => {
+    const handleGlobalSearch = (e) => {
+      setParams(prev => ({ ...prev, search: e.detail, page: 0 }));
+    };
+    window.addEventListener('global-search', handleGlobalSearch);
+    return () => window.removeEventListener('global-search', handleGlobalSearch);
+  }, []);
+
   // Page handlers
   const handlePageChange = (newPage) => {
     setParams((prev) => ({ ...prev, page: newPage }));

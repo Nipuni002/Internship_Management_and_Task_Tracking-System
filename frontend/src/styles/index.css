@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* Smooth dark mode transitions */
+*, *::before, *::after {
+  transition-property: background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
 /* Global overrides or base styling if needed */
 html, body {
   margin: 0;
@@ -8,4 +15,10 @@ html, body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: #f8fafc; /* Slate-50 background for clean UI */
   color: #0f172a; /* Slate-900 default text color */
+}
+
+/* Dark theme overrides */
+html.dark, html.dark body {
+  background-color: #0f172a; /* Slate-900 */
+  color: #f8fafc; /* Slate-50 */
 }

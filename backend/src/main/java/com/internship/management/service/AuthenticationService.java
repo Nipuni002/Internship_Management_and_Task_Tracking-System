@@ -11,4 +11,5 @@ public interface AuthenticationService {
     LoginResponse login(LoginRequest request);
     User getCurrentUser();
     boolean isFirstTimeLogin(String email);
+    void resetPassword(String email, String employeeId, String newPassword);
 }

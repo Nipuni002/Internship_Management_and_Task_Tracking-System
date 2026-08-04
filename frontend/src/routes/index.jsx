@@ -4,53 +4,75 @@ import AuthLayout from '../layouts/AuthLayout';
 import DashboardLayout from '../layouts/DashboardLayout';
 import ProtectedRoute from './ProtectedRoute';
 import RoleProtectedRoute from './RoleProtectedRoute';
+import ErrorBoundary from '../components/common/ErrorBoundary';
+
+// Lazy load page views for optimized code splitting
+const Suspended = ({ children }) => (
+  <React.Suspense fallback={
+    <div className="min-h-[50vh] flex flex-col justify-center items-center font-sans">
+      <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600"></div>
+      <span className="text-slate-400 text-[10px] font-bold uppercase mt-3 tracking-wider">Loading Page View...</span>
+    </div>
+  }>
+    {children}
+  </React.Suspense>
+);
 
 // Auth Pages
-import Login from '../pages/auth/Login';
-import Register from '../pages/auth/Register';
+const Login = React.lazy(() => import('../pages/auth/Login'));
+const Register = React.lazy(() => import('../pages/auth/Register'));
+const ForgotPassword = React.lazy(() => import('../pages/auth/ForgotPassword'));
+const ResetPassword = React.lazy(() => import('../pages/auth/ResetPassword'));
 
 // Admin Pages
-import AdminDashboard from '../pages/admin/AdminDashboard';
-import InternList from '../pages/admin/interns/InternList';
-import AddIntern from '../pages/admin/interns/AddIntern';
-import EditIntern from '../pages/admin/interns/EditIntern';
-import InternDetails from '../pages/admin/interns/InternDetails';
-import ProjectList from '../pages/admin/projects/ProjectList';
-import CreateProject from '../pages/admin/projects/CreateProject';
-import EditProject from '../pages/admin/projects/EditProject';
-import ProjectDetails from '../pages/admin/projects/ProjectDetails';
-import AdminTaskList from '../pages/admin/tasks/TaskList';
-import AdminCreateTask from '../pages/admin/tasks/CreateTask';
-import AdminEditTask from '../pages/admin/tasks/EditTask';
-import AdminTaskDetails from '../pages/admin/tasks/TaskDetails';
-import AllDailyLogs from '../pages/admin/logs/AllDailyLogs';
-import AdminDailyLogDetails from '../pages/admin/logs/DailyLogDetails';
-import SubmissionList from '../pages/admin/submissions/SubmissionList';
-import ReviewSubmission from '../pages/admin/submissions/ReviewSubmission';
-import AdminSubmissionDetails from '../pages/admin/submissions/SubmissionDetails';
-import AdminAnalytics from '../pages/admin/Analytics';
-import AdminProfile from '../pages/admin/Profile';
-import AdminSettings from '../pages/admin/Settings';
+const AdminDashboard = React.lazy(() => import('../pages/admin/dashboard/AdminDashboard'));
+const InternList = React.lazy(() => import('../pages/admin/interns/InternList'));
+const AddIntern = React.lazy(() => import('../pages/admin/interns/AddIntern'));
+const EditIntern = React.lazy(() => import('../pages/admin/interns/EditIntern'));
+const InternDetails = React.lazy(() => import('../pages/admin/interns/InternDetails'));
+const ProjectList = React.lazy(() => import('../pages/admin/projects/ProjectList'));
+const CreateProject = React.lazy(() => import('../pages/admin/projects/CreateProject'));
+const EditProject = React.lazy(() => import('../pages/admin/projects/EditProject'));
+const ProjectDetails = React.lazy(() => import('../pages/admin/projects/ProjectDetails'));
+const AdminTaskList = React.lazy(() => import('../pages/admin/tasks/TaskList'));
+const AdminCreateTask = React.lazy(() => import('../pages/admin/tasks/CreateTask'));
+const AdminEditTask = React.lazy(() => import('../pages/admin/tasks/EditTask'));
+const AdminTaskDetails = React.lazy(() => import('../pages/admin/tasks/TaskDetails'));
+const AllDailyLogs = React.lazy(() => import('../pages/admin/logs/AllDailyLogs'));
+const AdminDailyLogDetails = React.lazy(() => import('../pages/admin/logs/DailyLogDetails'));
+const SubmissionList = React.lazy(() => import('../pages/admin/submissions/SubmissionList'));
+const ReviewSubmission = React.lazy(() => import('../pages/admin/submissions/ReviewSubmission'));
+const AdminSubmissionDetails = React.lazy(() => import('../pages/admin/submissions/SubmissionDetails'));
+const AdminAnalytics = React.lazy(() => import('../pages/admin/Analytics'));
+const AdminProfile = React.lazy(() => import('../pages/admin/Profile'));
+
+// Admin Additional Feature Pages
+const AdminAttendance = React.lazy(() => import('../pages/admin/attendance/AdminAttendance'));
+const AdminLeaveList = React.lazy(() => import('../pages/admin/leave/AdminLeaveList'));
+const AdminEvaluation = React.lazy(() => import('../pages/admin/evaluations/AdminEvaluation'));
 
 // Intern Pages
-import InternDashboard from '../pages/intern/InternDashboard';
-import InternProjects from '../pages/intern/Projects';
-import InternMyTasks from '../pages/intern/tasks/MyTasks';
-import InternTaskDetails from '../pages/intern/tasks/TaskDetails';
-import DailyLogList from '../pages/intern/logs/DailyLogList';
-import AddDailyLog from '../pages/intern/logs/AddDailyLog';
-import EditDailyLog from '../pages/intern/logs/EditDailyLog';
-import InternDailyLogDetails from '../pages/intern/logs/DailyLogDetails';
-import MySubmissions from '../pages/intern/submissions/MySubmissions';
-import SubmitWork from '../pages/intern/submissions/SubmitWork';
-import InternSubmissionDetails from '../pages/intern/submissions/SubmissionDetails';
-import InternFeedback from '../pages/intern/Feedback';
-import InternProfile from '../pages/intern/Profile';
+const InternDashboard = React.lazy(() => import('../pages/intern/dashboard/InternDashboard'));
+const InternProjects = React.lazy(() => import('../pages/intern/Projects'));
+const InternMyTasks = React.lazy(() => import('../pages/intern/tasks/MyTasks'));
+const InternTaskDetails = React.lazy(() => import('../pages/intern/tasks/TaskDetails'));
+const DailyLogList = React.lazy(() => import('../pages/intern/logs/DailyLogList'));
+const AddDailyLog = React.lazy(() => import('../pages/intern/logs/AddDailyLog'));
+const EditDailyLog = React.lazy(() => import('../pages/intern/logs/EditDailyLog'));
+const InternDailyLogDetails = React.lazy(() => import('../pages/intern/logs/DailyLogDetails'));
+const MySubmissions = React.lazy(() => import('../pages/intern/submissions/MySubmissions'));
+const SubmitWork = React.lazy(() => import('../pages/intern/submissions/SubmitWork'));
+const InternSubmissionDetails = React.lazy(() => import('../pages/intern/submissions/SubmissionDetails'));
+const InternFeedback = React.lazy(() => import('../pages/intern/Feedback'));
+const InternProfile = React.lazy(() => import('../pages/intern/Profile'));
+
+// Intern Additional Feature Pages
+const InternAttendance = React.lazy(() => import('../pages/intern/attendance/InternAttendance'));
+const InternLeaveList = React.lazy(() => import('../pages/intern/leave/InternLeaveList'));
+const InternEvaluation = React.lazy(() => import('../pages/intern/evaluations/InternEvaluation'));
 
 // Common Pages
-import AccessDenied from '../components/common/AccessDenied';
-
-
+const AccessDenied = React.lazy(() => import('../components/common/AccessDenied'));
 
 const NotFoundPlaceholder = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center p-6 text-white text-center font-sans">
@@ -58,7 +80,7 @@ const NotFoundPlaceholder = () => (
       <h1 className="text-6xl font-bold text-rose-500">404</h1>
       <h2 className="text-2xl font-semibold mt-4">Page Not Found</h2>
       <p className="text-slate-400 text-sm mt-2">The page you are looking for does not exist.</p>
-      <a href="/" className="mt-6 inline-block bg-slate-800 hover:bg-slate-705 text-white text-xs font-semibold py-2.5 px-6 rounded-lg transition-all border border-slate-700">
+      <a href="/" className="mt-6 inline-block bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold py-2.5 px-6 rounded-lg transition-all border border-slate-700">
         Back Home
       </a>
     </div>
@@ -72,14 +94,23 @@ export const router = createBrowserRouter([
   },
   {
     element: <AuthLayout />,
+    errorElement: <ErrorBoundary />,
     children: [
       {
         path: '/login',
-        element: <Login />,
+        element: <Suspended><Login /></Suspended>,
       },
       {
         path: '/register',
-        element: <Register />,
+        element: <Suspended><Register /></Suspended>,
+      },
+      {
+        path: '/forgot-password',
+        element: <Suspended><ForgotPassword /></Suspended>,
+      },
+      {
+        path: '/reset-password',
+        element: <Suspended><ResetPassword /></Suspended>,
       },
     ],
   },
@@ -89,13 +120,14 @@ export const router = createBrowserRouter([
         <DashboardLayout />
       </ProtectedRoute>
     ),
+    errorElement: <ErrorBoundary />,
     children: [
       // Admin View Routes
       {
         path: '/admin/dashboard',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <AdminDashboard />
+            <Suspended><AdminDashboard /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -103,7 +135,7 @@ export const router = createBrowserRouter([
         path: '/admin/interns',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <InternList />
+            <Suspended><InternList /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -111,7 +143,7 @@ export const router = createBrowserRouter([
         path: '/admin/interns/add',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <AddIntern />
+            <Suspended><AddIntern /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -119,7 +151,7 @@ export const router = createBrowserRouter([
         path: '/admin/interns/:id',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <InternDetails />
+            <Suspended><InternDetails /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -127,7 +159,7 @@ export const router = createBrowserRouter([
         path: '/admin/interns/:id/edit',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <EditIntern />
+            <Suspended><EditIntern /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -135,7 +167,7 @@ export const router = createBrowserRouter([
         path: '/admin/projects',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <ProjectList />
+            <Suspended><ProjectList /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -143,7 +175,7 @@ export const router = createBrowserRouter([
         path: '/admin/projects/create',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <CreateProject />
+            <Suspended><CreateProject /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -151,7 +183,7 @@ export const router = createBrowserRouter([
         path: '/admin/projects/:id',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <ProjectDetails />
+            <Suspended><ProjectDetails /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -159,7 +191,7 @@ export const router = createBrowserRouter([
         path: '/admin/projects/:id/edit',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <EditProject />
+            <Suspended><EditProject /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -167,7 +199,7 @@ export const router = createBrowserRouter([
         path: '/admin/tasks',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <AdminTaskList />
+            <Suspended><AdminTaskList /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -175,7 +207,7 @@ export const router = createBrowserRouter([
         path: '/admin/tasks/create',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <AdminCreateTask />
+            <Suspended><AdminCreateTask /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -183,7 +215,7 @@ export const router = createBrowserRouter([
         path: '/admin/tasks/:id',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <AdminTaskDetails />
+            <Suspended><AdminTaskDetails /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -191,7 +223,7 @@ export const router = createBrowserRouter([
         path: '/admin/tasks/:id/edit',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <AdminEditTask />
+            <Suspended><AdminEditTask /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -199,7 +231,7 @@ export const router = createBrowserRouter([
         path: '/admin/logs',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <AllDailyLogs />
+            <Suspended><AllDailyLogs /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -207,7 +239,7 @@ export const router = createBrowserRouter([
         path: '/admin/logs/:id',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <AdminDailyLogDetails />
+            <Suspended><AdminDailyLogDetails /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -215,7 +247,7 @@ export const router = createBrowserRouter([
         path: '/admin/submissions',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <SubmissionList />
+            <Suspended><SubmissionList /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -223,7 +255,7 @@ export const router = createBrowserRouter([
         path: '/admin/submissions/:id',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <AdminSubmissionDetails />
+            <Suspended><AdminSubmissionDetails /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -231,7 +263,7 @@ export const router = createBrowserRouter([
         path: '/admin/submissions/:id/review',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <ReviewSubmission />
+            <Suspended><ReviewSubmission /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -239,7 +271,7 @@ export const router = createBrowserRouter([
         path: '/admin/analytics',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <AdminAnalytics />
+            <Suspended><AdminAnalytics /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -247,15 +279,35 @@ export const router = createBrowserRouter([
         path: '/admin/profile',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <AdminProfile />
+            <Suspended><AdminProfile /></Suspended>
           </RoleProtectedRoute>
         ),
       },
+
+      // Admin Attendance Route
       {
-        path: '/admin/settings',
+        path: '/admin/attendance',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
-            <AdminSettings />
+            <Suspended><AdminAttendance /></Suspended>
+          </RoleProtectedRoute>
+        ),
+      },
+      // Admin Leave Route
+      {
+        path: '/admin/leave',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
+            <Suspended><AdminLeaveList /></Suspended>
+          </RoleProtectedRoute>
+        ),
+      },
+      // Admin Evaluations Route
+      {
+        path: '/admin/evaluations',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_ADMIN">
+            <Suspended><AdminEvaluation /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -265,7 +317,7 @@ export const router = createBrowserRouter([
         path: '/intern/dashboard',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_INTERN">
-            <InternDashboard />
+            <Suspended><InternDashboard /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -273,7 +325,7 @@ export const router = createBrowserRouter([
         path: '/intern/projects',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_INTERN">
-            <InternProjects />
+            <Suspended><InternProjects /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -281,7 +333,7 @@ export const router = createBrowserRouter([
         path: '/intern/tasks',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_INTERN">
-            <InternMyTasks />
+            <Suspended><InternMyTasks /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -289,7 +341,7 @@ export const router = createBrowserRouter([
         path: '/intern/tasks/:id',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_INTERN">
-            <InternTaskDetails />
+            <Suspended><InternTaskDetails /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -297,7 +349,7 @@ export const router = createBrowserRouter([
         path: '/intern/logs',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_INTERN">
-            <DailyLogList />
+            <Suspended><DailyLogList /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -305,7 +357,7 @@ export const router = createBrowserRouter([
         path: '/intern/logs/add',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_INTERN">
-            <AddDailyLog />
+            <Suspended><AddDailyLog /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -313,7 +365,7 @@ export const router = createBrowserRouter([
         path: '/intern/logs/:id',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_INTERN">
-            <InternDailyLogDetails />
+            <Suspended><InternDailyLogDetails /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -321,7 +373,7 @@ export const router = createBrowserRouter([
         path: '/intern/logs/:id/edit',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_INTERN">
-            <EditDailyLog />
+            <Suspended><EditDailyLog /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -329,7 +381,7 @@ export const router = createBrowserRouter([
         path: '/intern/submissions',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_INTERN">
-            <MySubmissions />
+            <Suspended><MySubmissions /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -337,7 +389,7 @@ export const router = createBrowserRouter([
         path: '/intern/submissions/submit',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_INTERN">
-            <SubmitWork />
+            <Suspended><SubmitWork /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -345,7 +397,7 @@ export const router = createBrowserRouter([
         path: '/intern/submissions/:id',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_INTERN">
-            <InternSubmissionDetails />
+            <Suspended><InternSubmissionDetails /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -353,7 +405,7 @@ export const router = createBrowserRouter([
         path: '/intern/feedback',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_INTERN">
-            <InternFeedback />
+            <Suspended><InternFeedback /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -361,7 +413,34 @@ export const router = createBrowserRouter([
         path: '/intern/profile',
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_INTERN">
-            <InternProfile />
+            <Suspended><InternProfile /></Suspended>
+          </RoleProtectedRoute>
+        ),
+      },
+      // Intern Attendance Route
+      {
+        path: '/intern/attendance',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_INTERN">
+            <Suspended><InternAttendance /></Suspended>
+          </RoleProtectedRoute>
+        ),
+      },
+      // Intern Leave Route
+      {
+        path: '/intern/leave',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_INTERN">
+            <Suspended><InternLeaveList /></Suspended>
+          </RoleProtectedRoute>
+        ),
+      },
+      // Intern Evaluations Route
+      {
+        path: '/intern/evaluations',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_INTERN">
+            <Suspended><InternEvaluation /></Suspended>
           </RoleProtectedRoute>
         ),
       },
@@ -369,7 +448,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/access-denied',
-    element: <AccessDenied />,
+    element: <Suspended><AccessDenied /></Suspended>,
   },
   {
     path: '*',
