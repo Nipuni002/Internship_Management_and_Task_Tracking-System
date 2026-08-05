@@ -211,6 +211,17 @@ const attendanceService = {
       success: true,
       data: summary,
     };
+  },
+
+  deleteAttendance: async (id) => {
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    const logs = getStoredAttendance();
+    const filtered = logs.filter((l) => l.id !== id);
+    saveAttendance(filtered);
+    return {
+      success: true,
+      message: 'Attendance record deleted successfully',
+    };
   }
 };
 

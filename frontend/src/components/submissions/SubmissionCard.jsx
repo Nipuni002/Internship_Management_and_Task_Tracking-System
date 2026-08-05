@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiEye, FiMessageSquare, FiEdit3, FiGithub, FiDownloadCloud, FiCalendar } from 'react-icons/fi';
+import { FiEye, FiMessageSquare, FiEdit3, FiGithub, FiDownloadCloud, FiCalendar, FiTrash2 } from 'react-icons/fi';
 import StatusBadge from './StatusBadge';
 
 const SubmissionCard = ({
@@ -10,6 +10,7 @@ const SubmissionCard = ({
   showInternName = false,
   onOpenFeedback,
   onOpenReview,
+  onDelete,
   userRole = 'ROLE_INTERN',
 }) => {
   const { id, taskId, status, submittedAt, feedback, githubLink, documentLink, notes } = submission;
@@ -122,6 +123,28 @@ const SubmissionCard = ({
           >
             <FiEye size={15} />
           </Link>
+
+          {/* Edit Option (Intern only, only if Pending or Revision Required) */}
+          {userRole !== 'ROLE_ADMIN' && (status === 'PENDING' || status === 'REVISION_REQUIRED') && (
+            <Link
+              to={`/intern/submissions/${id}/edit`}
+              className="p-1.5 rounded-lg text-amber-600 hover:bg-amber-50 cursor-pointer transition-colors"
+              title="Edit Submission"
+            >
+              <FiEdit3 size={15} />
+            </Link>
+          )}
+
+          {/* Delete Option (Intern only, only if Pending or Revision Required) */}
+          {userRole !== 'ROLE_ADMIN' && (status === 'PENDING' || status === 'REVISION_REQUIRED') && (
+            <button
+              onClick={() => onDelete(id, taskTitle)}
+              className="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50 cursor-pointer transition-colors focus:outline-none"
+              title="Delete Submission"
+            >
+              <FiTrash2 size={15} />
+            </button>
+          )}
 
           {userRole === 'ROLE_ADMIN' && status === 'PENDING' && (
             <button

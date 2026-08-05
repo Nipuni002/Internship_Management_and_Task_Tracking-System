@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiEye, FiMessageSquare, FiEdit3, FiDownloadCloud, FiGithub } from 'react-icons/fi';
+import { FiEye, FiMessageSquare, FiEdit3, FiDownloadCloud, FiGithub, FiTrash2 } from 'react-icons/fi';
 import StatusBadge from './StatusBadge';
 
 const SubmissionTable = ({
@@ -10,6 +10,7 @@ const SubmissionTable = ({
   showInternColumn = false,
   onOpenFeedback,
   onOpenReview, // Admin callback to open the review modal or trigger action
+  onDelete,
   userRole = 'ROLE_INTERN',
 }) => {
   const formatDate = (dateString) => {
@@ -91,6 +92,28 @@ const SubmissionTable = ({
                     >
                       <FiEye size={15} />
                     </Link>
+
+                    {/* Edit Option (Intern only, only if Pending or Revision Required) */}
+                    {userRole !== 'ROLE_ADMIN' && (status === 'PENDING' || status === 'REVISION_REQUIRED') && (
+                      <Link
+                        to={`/intern/submissions/${id}/edit`}
+                        className="p-1.5 rounded-lg text-amber-650 hover:bg-amber-50 transition-colors cursor-pointer"
+                        title="Edit Submission"
+                      >
+                        <FiEdit3 size={15} />
+                      </Link>
+                    )}
+
+                    {/* Delete Option (Intern only, only if Pending or Revision Required) */}
+                    {userRole !== 'ROLE_ADMIN' && (status === 'PENDING' || status === 'REVISION_REQUIRED') && (
+                      <button
+                        onClick={() => onDelete(id, taskTitle)}
+                        className="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer focus:outline-none"
+                        title="Delete Submission"
+                      >
+                        <FiTrash2 size={15} />
+                      </button>
+                    )}
 
                     {/* Links Shortcuts */}
                     {githubLink && (

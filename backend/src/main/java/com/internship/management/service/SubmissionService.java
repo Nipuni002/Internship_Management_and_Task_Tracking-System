@@ -15,4 +15,5 @@ public interface SubmissionService {
     SubmissionResponse approveSubmission(String id, SubmissionReviewRequest request);
     SubmissionResponse rejectSubmission(String id, SubmissionReviewRequest request);
     SubmissionResponse requestRevision(String id, SubmissionReviewRequest request);
+    void deleteSubmission(String id);
 }

@@ -187,6 +187,32 @@ public class SubmissionServiceImpl implements SubmissionService {
         return mapToResponse(saved);
     }
 
+    @Override
+    public void deleteSubmission(String id) {
+        Submission submission = submissionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Submission not found with id: " + id));
+
+        Task task = taskRepository.findById(submission.getTaskId())
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found for submission"));
+
+        Intern intern = getCurrentIntern();
+        if (!task.getAssignedInternId().equals(intern.getId())) {
+            throw new AccessDeniedException("You are not authorized to delete this submission");
+        }
+
+        if (submission.getStatus() == SubmissionStatus.APPROVED || submission.getStatus() == SubmissionStatus.REJECTED) {
+            throw new IllegalArgumentException("Cannot delete a submission that has already been " + submission.getStatus());
+        }
+
+        submissionRepository.delete(submission);
+
+        // Update task state back to TODO
+        task.setStatus(TaskStatus.TODO);
+        task.setSubmissionLink(null);
+        task.setFeedback(null);
+        taskRepository.save(task);
+    }
+
     private Intern getCurrentIntern() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();

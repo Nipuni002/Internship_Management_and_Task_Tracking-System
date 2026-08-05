@@ -563,10 +563,10 @@ const Analytics = () => {
         {/* Additional Dashboard Charts (Feature 7) */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Attendance Overview Chart */}
-          <div className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 shadow-xs h-[320px] flex flex-col justify-between">
-            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-2">
-              <h4 className="font-bold text-slate-800 dark:text-slate-250 text-sm">Attendance Overview</h4>
-              <span className="text-[10px] text-slate-400 font-bold uppercase bg-slate-50 dark:bg-slate-800 px-2 py-0.5 rounded border dark:border-slate-750">Days</span>
+          <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-xs h-[320px] flex flex-col justify-between">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-2">
+              <h4 className="font-bold text-blue-600 text-sm">Attendance Overview</h4>
+              <span className="text-[10px] text-slate-400 font-bold uppercase bg-slate-50 px-2 py-0.5 rounded border">Days</span>
             </div>
             <div className="flex-1 min-h-0">
               {extraChartsData.attendanceOverview.length > 0 ? (
@@ -580,16 +580,16 @@ const Analytics = () => {
                   </BarChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-slate-400 dark:text-slate-650 text-xs font-semibold">No Attendance Data</div>
+                <div className="w-full h-full flex items-center justify-center text-slate-400 text-xs font-semibold">No Attendance Data</div>
               )}
             </div>
           </div>
 
           {/* Leave Statistics Pie Chart */}
-          <div className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 shadow-xs h-[320px] flex flex-col justify-between">
-            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-2">
-              <h4 className="font-bold text-slate-800 dark:text-slate-250 text-sm">Leave Statistics</h4>
-              <span className="text-[10px] text-slate-400 font-bold uppercase bg-slate-50 dark:bg-slate-800 px-2 py-0.5 rounded border dark:border-slate-750">Types</span>
+          <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-xs h-[320px] flex flex-col justify-between">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-2">
+              <h4 className="font-bold text-amber-600 text-sm">Leave Statistics</h4>
+              <span className="text-[10px] text-slate-400 font-bold uppercase bg-slate-50 px-2 py-0.5 rounded border">Types</span>
             </div>
             <div className="flex-1 min-h-0">
               {extraChartsData.leaveStats.some(i => i.value > 0) ? (
@@ -613,16 +613,16 @@ const Analytics = () => {
                   </PieChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-slate-400 dark:text-slate-650 text-xs font-semibold">No Leave Data</div>
+                <div className="w-full h-full flex items-center justify-center text-slate-400 text-xs font-semibold">No Leave Data</div>
               )}
             </div>
           </div>
 
           {/* Performance Scores Bar Chart */}
-          <div className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 shadow-xs h-[320px] flex flex-col justify-between">
-            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-2">
-              <h4 className="font-bold text-slate-800 dark:text-slate-250 text-sm">Performance Scores (Top 10)</h4>
-              <span className="text-[10px] text-slate-400 font-bold uppercase bg-slate-50 dark:bg-slate-800 px-2 py-0.5 rounded border dark:border-slate-750">Score %</span>
+          <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-xs h-[320px] flex flex-col justify-between">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-2">
+              <h4 className="font-bold text-emerald-600 text-sm">Performance Scores (Top 10)</h4>
+              <span className="text-[10px] text-slate-400 font-bold uppercase bg-slate-50 px-2 py-0.5 rounded border">Score %</span>
             </div>
             <div className="flex-1 min-h-0">
               {extraChartsData.performanceScores.length > 0 ? (
@@ -636,7 +636,7 @@ const Analytics = () => {
                   </BarChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-slate-400 dark:text-slate-650 text-xs font-semibold">No Evaluation Scores Yet</div>
+                <div className="w-full h-full flex items-center justify-center text-slate-400 text-xs font-semibold">No Evaluation Scores Yet</div>
               )}
             </div>
           </div>

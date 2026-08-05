@@ -63,6 +63,7 @@ const InternDailyLogDetails = React.lazy(() => import('../pages/intern/logs/Dail
 const MySubmissions = React.lazy(() => import('../pages/intern/submissions/MySubmissions'));
 const SubmitWork = React.lazy(() => import('../pages/intern/submissions/SubmitWork'));
 const InternSubmissionDetails = React.lazy(() => import('../pages/intern/submissions/SubmissionDetails'));
+const EditSubmission = React.lazy(() => import('../pages/intern/submissions/EditSubmission'));
 const InternFeedback = React.lazy(() => import('../pages/intern/Feedback'));
 const InternProfile = React.lazy(() => import('../pages/intern/Profile'));
 
@@ -398,6 +399,14 @@ export const router = createBrowserRouter([
         element: (
           <RoleProtectedRoute allowedRoles="ROLE_INTERN">
             <Suspended><InternSubmissionDetails /></Suspended>
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/intern/submissions/:id/edit',
+        element: (
+          <RoleProtectedRoute allowedRoles="ROLE_INTERN">
+            <Suspended><EditSubmission /></Suspended>
           </RoleProtectedRoute>
         ),
       },
