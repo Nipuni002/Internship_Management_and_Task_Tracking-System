@@ -56,14 +56,13 @@ public class DatabaseSeeder implements CommandLineRunner {
 
         // Seed Intern user
         if (!userRepository.existsByEmail("intern@internship.com")) {
-            User intern = User.builder()
-                    .firstName("Intern")
-                    .lastName("Developer")
-                    .email("intern@internship.com")
-                    .password(passwordEncoder.encode("Password123!"))
-                    .role(Role.INTERN)
-                    .status("ACTIVE")
-                    .build();
+            User intern = new User();
+            intern.setFirstName("Intern");
+            intern.setLastName("Developer");
+            intern.setEmail("intern@internship.com");
+            intern.setPassword(passwordEncoder.encode("Password123!"));
+            intern.setRole(Role.INTERN);
+            intern.setStatus("ACTIVE");
             userRepository.save(intern);
             System.out.println("Seeded Intern user: intern@internship.com / Password123!");
         }
