@@ -156,7 +156,7 @@ const AdminLeaveList = () => {
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="font-bold text-slate-900 text-sm">{item.internName}</span>
                         <span className="px-2 py-0.5 rounded bg-blue-50 border border-blue-100 text-blue-700 text-[9px] font-bold uppercase">
-                          {item.leaveType}
+                          {item.leaveType} {item.halfDay ? '(Half Day)' : ''}
                         </span>
                         <span className={`px-2 py-0.5 rounded-full border text-[9px] font-bold ${getStatusStyle(item.status)}`}>
                           {item.status}
@@ -165,7 +165,11 @@ const AdminLeaveList = () => {
 
                       <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-450 uppercase tracking-wide">
                         <FiCalendar size={12} />
-                        <span>Dates: {item.startDate} to {item.endDate}</span>
+                        <span>
+                          {item.halfDay 
+                            ? `Date: ${item.startDate}` 
+                            : `Dates: ${item.startDate} to ${item.endDate}`}
+                        </span>
                       </div>
 
                       <p className="text-xs text-slate-600 leading-relaxed font-semibold">

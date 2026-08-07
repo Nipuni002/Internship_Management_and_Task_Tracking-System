@@ -6,7 +6,7 @@ import LoadingSpinner from '../../../components/common/LoadingSpinner';
 import attendanceService from '../../../services/attendanceService';
 import internService from '../../../services/internService';
 import toast from 'react-hot-toast';
-import { FiSearch, FiCalendar, FiFileText, FiDownload, FiUserCheck, FiPlus, FiAlertCircle } from 'react-icons/fi';
+import { FiSearch, FiCalendar, FiFileText, FiDownload, FiUserCheck, FiPlus, FiAlertCircle, FiTrash2, FiAlertTriangle, FiX } from 'react-icons/fi';
 import { exportToCSV, exportToPDF } from '../../../utils/reportExporter';
 
 const AdminAttendance = () => {
@@ -21,6 +21,14 @@ const AdminAttendance = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterDate, setFilterDate] = useState('');
   const [summary, setSummary] = useState({ present: 0, absent: 0, late: 0, leave: 0 });
+
+  // Delete modal state
+  const [deleteConfirm, setDeleteConfirm] = useState({
+    isOpen: false,
+    id: null,
+    date: '',
+    internName: '',
+  });
 
   const loadData = async () => {
     setLoading(true);
@@ -117,6 +125,43 @@ const AdminAttendance = () => {
       toast.success('CSV report exported successfully!');
     } catch (e) {
       toast.error('Failed to generate CSV.');
+    }
+  };
+
+  const triggerDeleteModal = (id, date, internName) => {
+    setDeleteConfirm({
+      isOpen: true,
+      id,
+      date,
+      internName,
+    });
+  };
+
+  const closeDeleteModal = () => {
+    setDeleteConfirm({
+      isOpen: false,
+      id: null,
+      date: '',
+      internName: '',
+    });
+  };
+
+  const handleConfirmDelete = async () => {
+    const { id } = deleteConfirm;
+    closeDeleteModal();
+    setLoading(true);
+    try {
+      const res = await attendanceService.deleteAttendance(id);
+      if (res.success) {
+        toast.success('Attendance record deleted successfully!');
+        loadData();
+      } else {
+        toast.error(res.message || 'Failed to delete attendance record.');
+        setLoading(false);
+      }
+    } catch (err) {
+      toast.error('Failed to delete attendance record.');
+      setLoading(false);
     }
   };
 
@@ -246,6 +291,7 @@ const AdminAttendance = () => {
                         <th className="py-3 px-3 text-center">Status</th>
                         <th className="py-3 px-3 text-center">Check In</th>
                         <th className="py-3 px-3 text-center">Check Out</th>
+                        <th className="py-3 px-3 text-center">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-50 text-slate-700 font-semibold">
@@ -267,6 +313,15 @@ const AdminAttendance = () => {
                             </td>
                             <td className="py-3.5 px-3 text-center text-slate-500 font-bold">{log.checkIn || '-'}</td>
                             <td className="py-3.5 px-3 text-center text-slate-500 font-bold">{log.checkOut || '-'}</td>
+                            <td className="py-3.5 px-3 text-center">
+                              <button
+                                onClick={() => triggerDeleteModal(log.id, log.date, log.internName)}
+                                className="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                                title="Delete Attendance Record"
+                              >
+                                <FiTrash2 size={15} />
+                              </button>
+                            </td>
                           </tr>
                         );
                       })}
@@ -281,6 +336,59 @@ const AdminAttendance = () => {
               )}
             </div>
 
+          </div>
+        </div>
+      )}
+      {/* Delete Confirmation Modal */}
+      {deleteConfirm.isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs font-sans text-xs">
+          <div 
+            className="bg-white w-full max-w-md rounded-2xl border border-slate-200 shadow-xl overflow-hidden transform transition-all duration-300 animate-in fade-in zoom-in-95"
+            role="dialog"
+            aria-modal="true"
+          >
+            {/* Header */}
+            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+              <div className="flex items-center gap-2 text-rose-600">
+                <FiAlertTriangle size={20} className="shrink-0 animate-bounce" />
+                <h3 className="text-sm font-bold tracking-wide uppercase">Confirm Delete Attendance</h3>
+              </div>
+              <button 
+                onClick={closeDeleteModal} 
+                className="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-50 cursor-pointer"
+                title="Close dialog"
+              >
+                <FiX size={16} />
+              </button>
+            </div>
+
+            {/* Content Body */}
+            <div className="p-6">
+              <p className="text-sm text-slate-600 font-medium leading-relaxed">
+                Are you sure you want to permanently delete the attendance log for{' '}
+                <strong className="text-slate-950 font-bold">{deleteConfirm.internName}</strong> on{' '}
+                <strong className="text-slate-950 font-bold">{deleteConfirm.date}</strong>?
+              </p>
+              <p className="text-xs text-rose-500/90 mt-2 font-semibold bg-rose-50/70 border border-rose-100 p-2.5 rounded-lg">
+                Warning: This action will permanently delete the attendance record and cannot be undone.
+              </p>
+            </div>
+
+            {/* Actions Footer */}
+            <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3">
+              <button
+                onClick={closeDeleteModal}
+                className="border border-slate-200 text-slate-600 hover:bg-slate-100 font-bold py-2 px-4 rounded-xl text-xs transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmDelete}
+                className="bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 px-5 rounded-xl text-xs transition-colors cursor-pointer shadow-sm hover:shadow-md"
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       )}

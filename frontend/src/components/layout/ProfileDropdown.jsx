@@ -57,14 +57,14 @@ const ProfileDropdown = () => {
           </div>
 
           {/* Links */}
-          <div className="py-1">
+          <div className="px-2 py-1.5">
             <Link
               to={profilePath}
               onClick={() => setIsOpen(false)}
-              className="flex items-center gap-3 px-4 py-2 text-xs font-medium text-slate-700 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
+              className="flex items-center gap-3 px-3 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-sm"
             >
-              <FiUser className="text-slate-400 dark:text-slate-500" size={15} />
-              View Profile
+              <FiUser className="text-white" size={15} />
+              <span>View Profile</span>
             </Link>
           </div>
 

@@ -17,6 +17,7 @@ const InternLeaveList = () => {
     startDate: '',
     endDate: '',
     reason: '',
+    halfDay: false,
   });
 
   const [applying, setApplying] = useState(false);
@@ -40,25 +41,47 @@ const InternLeaveList = () => {
   }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    if (name === 'halfDay') {
+      setFormData(prev => ({
+        ...prev,
+        halfDay: checked,
+        endDate: checked ? prev.startDate : prev.endDate
+      }));
+    } else if (name === 'startDate') {
+      setFormData(prev => ({
+        ...prev,
+        startDate: value,
+        endDate: prev.halfDay ? value : prev.endDate
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.startDate || !formData.endDate || !formData.reason) {
+    const finalData = { ...formData };
+    if (finalData.halfDay) {
+      finalData.endDate = finalData.startDate;
+    }
+
+    if (!finalData.startDate || !finalData.endDate || !finalData.reason) {
       toast.error('All fields are required.');
       return;
     }
 
-    if (new Date(formData.startDate) > new Date(formData.endDate)) {
+    if (new Date(finalData.startDate) > new Date(finalData.endDate)) {
       toast.error('Start date must be before or equal to End date.');
       return;
     }
 
     setApplying(true);
     try {
-      const res = await leaveService.applyForLeave(formData);
+      const res = await leaveService.applyForLeave(finalData);
       if (res.success) {
         toast.success('Leave requested successfully!');
         setFormData({
@@ -66,6 +89,7 @@ const InternLeaveList = () => {
           startDate: '',
           endDate: '',
           reason: '',
+          halfDay: false,
         });
         loadLeaves();
       } else {
@@ -135,8 +159,24 @@ const InternLeaveList = () => {
                   </select>
                 </div>
 
+                <div className="flex items-center gap-2 py-1 select-none">
+                  <input
+                    type="checkbox"
+                    id="halfDay"
+                    name="halfDay"
+                    checked={formData.halfDay}
+                    onChange={handleChange}
+                    className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500 cursor-pointer"
+                  />
+                  <label htmlFor="halfDay" className="text-xs font-semibold text-slate-650 cursor-pointer">
+                    Half-day Leave
+                  </label>
+                </div>
+
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Start Date</label>
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">
+                    {formData.halfDay ? 'Date' : 'Start Date'}
+                  </label>
                   <input
                     type="date"
                     name="startDate"
@@ -147,17 +187,19 @@ const InternLeaveList = () => {
                   />
                 </div>
 
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">End Date</label>
-                  <input
-                    type="date"
-                    name="endDate"
-                    value={formData.endDate}
-                    onChange={handleChange}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 focus:outline-none"
-                    required
-                  />
-                </div>
+                {!formData.halfDay && (
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">End Date</label>
+                    <input
+                      type="date"
+                      name="endDate"
+                      value={formData.endDate}
+                      onChange={handleChange}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 focus:outline-none"
+                      required
+                    />
+                  </div>
+                )}
 
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Reason</label>
@@ -198,8 +240,8 @@ const InternLeaveList = () => {
                     <div key={item.id} className="bg-slate-50/50 border border-slate-150 rounded-xl p-4 flex flex-col sm:flex-row items-start justify-between gap-3 shadow-xs hover:border-slate-300 transition-colors">
                       <div className="space-y-1.5 min-w-0 flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="px-2 py-0.5 rounded bg-blue-100 text-blue-700 text-[9px] font-bold uppercase border border-blue-200">
-                            {item.leaveType}
+                           <span className="px-2 py-0.5 rounded bg-blue-100 text-blue-700 text-[9px] font-bold uppercase border border-blue-200">
+                            {item.leaveType} {item.halfDay ? '(Half Day)' : ''}
                           </span>
                           <span className={`px-2.5 py-0.5 rounded-full border text-[9px] font-bold ${getStatusStyle(item.status)}`}>
                             {item.status}
@@ -207,7 +249,11 @@ const InternLeaveList = () => {
                         </div>
                         <div className="flex items-center gap-1 text-[10px] font-bold text-slate-500 uppercase tracking-wide">
                           <FiCalendar size={12} className="text-slate-400" />
-                          <span>{item.startDate} to {item.endDate}</span>
+                          <span>
+                            {item.halfDay 
+                              ? `Date: ${item.startDate}` 
+                              : `Dates: ${item.startDate} to ${item.endDate}`}
+                          </span>
                         </div>
                         <p className="text-xs text-slate-650 font-semibold">{item.reason}</p>
                       </div>

@@ -140,4 +140,18 @@ public class SubmissionController {
         SubmissionResponse response = submissionService.requestRevision(id, request);
         return ResponseEntity.ok(ApiResponse.success("Revision requested successfully", response));
     }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('INTERN')")
+    @Operation(summary = "Delete submission", description = "Allows interns to delete their task submission details prior to final review.")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Submission deleted successfully"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Unauthorized"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Forbidden - Requires INTERN role"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Submission not found")
+    })
+    public ResponseEntity<ApiResponse<Void>> deleteSubmission(@PathVariable String id) {
+        submissionService.deleteSubmission(id);
+        return ResponseEntity.ok(ApiResponse.success("Submission deleted successfully"));
+    }
 }

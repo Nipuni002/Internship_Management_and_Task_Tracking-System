@@ -79,6 +79,15 @@ const submissionService = {
   requestRevision: async (id, reviewData) => {
     const response = await api.patch(`/api/submissions/${id}/revision`, reviewData);
     return response.data; // ApiResponse wrapping SubmissionResponse
+  },
+
+  /**
+   * Delete a task submission by ID.
+   * @param {string} id - Submission UUID.
+   */
+  deleteSubmission: async (id) => {
+    const response = await api.delete(`/api/submissions/${id}`);
+    return response.data; // ApiResponse wrapping Void
   }
 };
 
