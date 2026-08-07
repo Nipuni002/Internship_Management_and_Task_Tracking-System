@@ -4,33 +4,7 @@ Welcome to the **Internship Management and Task Tracking System**, a premium, pr
 
 ---
 
-## 🏗️ Architecture Overview
 
-The system is built as a split monorepo comprising a modern **React SPA frontend** and a robust **Spring Boot backend REST API** backed by **MongoDB**.
-
-```mermaid
-graph TD
-    subgraph Client ["Client Tier (Frontend)"]
-        A["React 19 SPA"] -->|HTTP / JSON| B["Axios API Client"]
-        A -->|Styling| C["Tailwind CSS v4"]
-        A -->|State / Context| D["Auth / Theme / Notification"]
-    end
-
-    subgraph Service ["Service Tier (Backend)"]
-        E["Spring Boot REST Controller"] -->|JSON Mapper| F["Security & JWT Filter"]
-        F -->|Business Logic| G["Services & DTOs"]
-        G -->|Data Access| H["Spring Data MongoDB Repositories"]
-    end
-
-    subgraph Database ["Data Store"]
-        I[("MongoDB Database (Atlas / Local)")]
-    end
-
-    B -->|REST API Calls (Port 8080)| E
-    H -->|Query & Save| I
-```
-
----
 
 ## 📁 Repository Structure
 
